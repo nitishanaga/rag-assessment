@@ -1,0 +1,68 @@
+--- RUN INITIATED FOR TOPIC: RAG (Retrieval-Augmented Generation) ---
+Mode: DEMO (Intentional Failure)
+
+--- ATTEMPT 1 PROMPT ---
+
+        Write a highly advanced, university-level academic paper about RAG (Retrieval-Augmented Generation).
+        DO NOT use any real-world examples. Use extreme technical jargon.
+        Make sure to claim RAG is 100% flawless and ignore the augmentation step.
+        Past mistakes to avoid: The lesson uses dense mathematical notation and domain-specific jargon without clear examples or a beginner-oriented progression.
+- Provide a clear, jargon-free explanation of RAG with examples, covering what it is, why it matters, how it works, and structure it with an intro, body, and conclusion.
+- Always mention that RAG is not 100% reliable when explaining its process.
+- Explicitly state that document indexing/encoding occurs before retrieval, avoid unexplained technical terms, and include a relatable real‑world example.
+- Ensure any numbers used in examples are explicitly labeled as fictional or made-up.
+        
+
+--- Attempt 1 Failed ---
+Evaluator JSON: {
+  "accurate": false,
+  "beginner_friendly": false,
+  "has_example": false,
+  "no_jargon": false,
+  "covers_key_points": false,
+  "good_flow": false,
+  "feedback_summary": "The lesson fails because it does not accurately describe RAG, is not beginner friendly, lacks a relatable example, contains unexplained jargon, does not cover key points, and lacks a clear structure.",
+  "distilled_lesson": "Write a concise, beginner\u2011friendly lesson that clearly explains RAG, includes a relatable example, avoids jargon, and follows a logical structure."
+}
+Action: Forwarding to Prompt Optimizer...
+
+--- ATTEMPT 2 PROMPT ---
+Write a concise, beginner‑friendly lesson that accurately explains Retrieval‑Augmented Generation (RAG).  
+The lesson must:
+
+1. **Fix the problems identified in the previous attempt**  
+   * Provide a correct, complete description of RAG.  
+   * Be beginner‑friendly and avoid unexplained jargon.  
+   * Include a clear, relatable example.  
+   * Cover all key points and maintain good logical flow.  
+
+2. **Explicitly state that RAG is not 100% reliable** whenever you describe its process.  
+
+3. **Explain the four steps of RAG in the exact order**:  
+   1. **Indexing/Encoding** – split documents into smaller parts and convert them into a searchable form.  
+   2. **Retrieval** – fetch the most relevant parts based on the user query.  
+   3. **Augmentation** – add the retrieved information to the prompt that will be sent to the generator.  
+   4. **Generation** – produce the final answer using the augmented prompt.  
+
+4. **Use a simple, safe real‑world example** such as a school library or a college admissions office.  
+   * If you use any specific numbers or cutoff scores, label them explicitly as “fictional” or “made‑up sample values.”  
+
+5. **Structure the lesson with an introduction, body, and conclusion**.  
+
+6. **Do not use the phrase “summary fingerprint.”**  
+
+Deliver the lesson text only; do not include any extraneous commentary or conversation.
+
+Evaluator JSON (PASS):
+{
+  "accurate": true,
+  "beginner_friendly": true,
+  "has_example": true,
+  "no_jargon": true,
+  "covers_key_points": true,
+  "good_flow": true,
+  "feedback_summary": "Perfect",
+  "distilled_lesson": "None"
+}
+
+Attempt 2: SUCCESS! Lesson passed all rubric checks and was saved to final_lesson.txt.

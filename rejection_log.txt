@@ -1,0 +1,4 @@
+--- Attempt 1 Failed ---
+Reason: FAIL - The explanation is too technical, lacks real‑world examples, uses jargon, and is not simple enough for a 12th‑grader reader.
+Action: The Prompt Optimizer analyzed memory.json and this log to dynamically rewrite the prompt.
+

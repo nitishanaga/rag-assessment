@@ -1,0 +1,9 @@
+{
+    "past_mistakes_to_avoid": [
+        "Provide a clear, jargon-free explanation of RAG with examples, covering what it is, why it matters, how it works, and structure it with an intro, body, and conclusion.",
+        "Always mention that RAG is not 100% reliable when explaining its process.",
+        "Explicitly state that document indexing/encoding occurs before retrieval, avoid unexplained technical terms, and include a relatable real\u2011world example.",
+        "Ensure any numbers used in examples are explicitly labeled as fictional or made-up.",
+        "Write a concise, beginner\u2011friendly lesson that clearly explains RAG, includes a relatable example, avoids jargon, and follows a logical structure."
+    ]
+}
