@@ -1,18 +1,21 @@
 import os
 import json
 import argparse
+from pathlib import Path
 from dotenv import load_dotenv
 from groq import Groq
 
-load_dotenv()
+BASE_DIR = Path(__file__).resolve().parent
+load_dotenv(BASE_DIR / ".env")
 groq_client = Groq(api_key=os.environ.get("GROQ_API_KEY", ""))
 
-MEMORY_FILE = "memory.json"
-LOG_FILE = "run_log.txt"
-FINAL_OUTPUT_FILE = "final_lesson.txt"
+MEMORY_FILE = BASE_DIR / "state" / "memory.json"
+LOG_FILE = BASE_DIR / "logs" / "run_log.txt"
+FINAL_OUTPUT_FILE = BASE_DIR / "output" / "final_lesson.txt"
 MODEL_NAME = "openai/gpt-oss-20b"
 
 def load_memory():
+    MEMORY_FILE.parent.mkdir(parents=True, exist_ok=True)
     if not os.path.exists(MEMORY_FILE):
         with open(MEMORY_FILE, "w", encoding="utf-8") as f:
             json.dump({"past_mistakes_to_avoid": []}, f)
@@ -104,10 +107,12 @@ def grade_lesson(lesson_text):
 
 def run_agent_loop(topic, is_demo=False):
     max_retries = 2
+    FINAL_OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
     
     if os.path.exists(FINAL_OUTPUT_FILE):
         os.remove(FINAL_OUTPUT_FILE)
         
+    LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(LOG_FILE, "w", encoding="utf-8") as f:
         f.write(f"--- RUN INITIATED FOR TOPIC: {topic} ---\n")
         f.write(f"Mode: {'DEMO (Intentional Failure)' if is_demo else 'NORMAL'}\n\n")

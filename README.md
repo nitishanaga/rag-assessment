@@ -22,8 +22,8 @@ Unlike standard linear LLM scripts, this system utilizes a **Decoupled Agentic A
         ▼                      │                      │
  [Update State]                ├─ [ANY is False] ─────┘
         │                      ▼
-        │             [Extracts Distilled Lesson to memory.json]
-        └─────────────[Writes Exact Prompt Changes to run_log.txt]
+        │             [Stores Distilled Lesson in state/memory.json]
+        └─────────────[Logs Updated Prompts in logs/run_log.txt]
 ```
 
 ### The 3-Node Design
@@ -38,11 +38,11 @@ Unlike standard linear LLM scripts, this system utilizes a **Decoupled Agentic A
 ### 1. Strict Boolean JSON Validation
 Early iterations relied on parsing text strings, which is brittle. The Evaluator is now forced via API constraints to return a pure JSON object with explicit boolean flags. The Python execution loop implements strict type-checking (`if value is True:`) to guarantee that malformed string responses (like `"false"`) immediately fail the validation gate.
 
-### 2. Distilled, Self-Pruning Memory (`memory.json`)
+### 2. Distilled, Self-Pruning Memory (`state/memory.json`)
 If an agentic system appends raw JSON feedback to a memory file indefinitely, it creates prompt bloat and context exhaustion. To solve this, the Evaluator generates a `"distilled_lesson"` (e.g., *"Rule: Always explicitly mention the augmentation step."*). The system acts as a FIFO buffer, retaining only the 5 most recent *distilled rules*, not raw logs.
 
-### 3. Log Transparency (`run_log.txt`)
-When the Optimizer rewrites a prompt, the system actively logs the *exact new prompt* to `run_log.txt`. This creates an auditable trace proving that the regeneration loop is meaningfully changing instructions, rather than just hitting the API again.
+### 3. Log Transparency (`logs/run_log.txt`)
+When the Optimizer rewrites a prompt, the system logs the *exact new prompt* to `logs/run_log.txt`. This creates an auditable trace showing how the instructions change after a failure.
 
 ### 4. Handling the Nuance of RAG Accuracy
 Instructing an AI to ensure a RAG lesson is "100% accurate" is technically flawed. The Evaluator explicitly enforces that the generated lesson correctly sequences RAG (Encoding -> Retrieval -> Augmentation -> Generation) and forbids claiming RAG is perfectly reliable, ensuring high technical fidelity.
@@ -65,7 +65,7 @@ Instructing an AI to ensure a RAG lesson is "100% accurate" is technically flawe
    ```
 
 3. **Configure Environment Variables:**
-   Create a `.env` file in the root directory and add your Groq API key:
+   Create a `.env` file in the project root and add your Groq API key:
    ```env
    GROQ_API_KEY=your_api_key_here
    ```
@@ -81,7 +81,19 @@ python agent.py
 ```
 
 ### Mode 2: Demonstration Run (Self-Healing Loop)
-Intentionally injects a bad prompt (commanding jargon-heavy academic output) to trigger the Evaluator's failure state, write to the log, extract a memory, and showcase the Optimizer dynamically recovering on Attempt 2.
+Intentionally injects a bad prompt (commanding jargon-heavy academic output) to trigger the Evaluator's failure state, update memory, and showcase the Optimizer rewriting the prompt. The loop can use up to two retries.
 ```bash
 python agent.py --demo
 ```
+
+Generated files are stored relative to the project folder, even when the script is launched from another working directory.
+
+## 📂 Project Structure
+
+* `agent.py`: Generator, evaluator, prompt optimizer, and bounded retry loop.
+* `requirements.txt`: Python dependencies.
+* `output/final_lesson.txt`: Lesson accepted by the evaluator in the latest successful run.
+* `logs/run_log.txt`: Latest run's prompts, rubric results, and outcome.
+* `state/memory.json`: Persistent store of recent distilled feedback.
+* `.env`: Local API key configuration; excluded from Git.
+* `.gitignore`: Excludes secrets, virtual environments, and Python cache files.
